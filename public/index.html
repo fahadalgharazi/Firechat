@@ -69,12 +69,12 @@
       var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
 
       // Listen for authentication state changes
-      firebase.auth().onAuthStateChanged(function(user) {
-  // Once authenticated, instantiate Firechat with the logged in user
-  if (user) {
-    initChat(user);
-  }
-});
+//       firebase.auth().onAuthStateChanged(function(user) {
+//   // Once authenticated, instantiate Firechat with the logged in user
+//   if (user) {
+//     initChat(user);
+//   }
+// });
 
 // Log the user in via Twitter (or Google or GitHub or email / password or etc.)
 var provider = new firebase.auth.GoogleAuthProvider();
@@ -86,24 +86,14 @@ firebase.auth().signInWithPopup(provider).catch(function(error) {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           // If the user is logged in, set them as the Firechat user
-          chat.setUser(user.uid, "Anonymous" + user.uid.substr(10, 8));
+          chat.setUser(user.uid, user.displayName);
         } else {
           // If the user is not logged in, sign them in anonymously
-          firebase.auth().signInAnonymously().catch(function(error) {
+          // firebase.auth().signInAnonymously().catch(function(error) {
             console.log("Error signing user in anonymously:", error);
-          });
+          // });
         }
       });
-      function initChat(user) {
-    // Get a Firebase Database ref
-    var chatRef = firebase.database().ref("chat");
-
-    // Create a Firechat instance
-    var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
-
-    // Set the Firechat user
-    chat.setUser(user.uid, user.displayName);
-  }
     </script>
   </body>
 </html>
